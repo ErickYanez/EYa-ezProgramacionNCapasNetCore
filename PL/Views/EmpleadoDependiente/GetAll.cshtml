@@ -1,0 +1,167 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de empleados</h2>
+    <p>Aqui puedes seleccionar un empleado para ver su dependencia</p>
+    <p>Para ver la dependencia de un empleado presione el boton Azul</p>
+    <hr />
+
+    @*@using (Html.BeginForm("GetAll", "EmpleadoDependiente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container mt-5">
+            <div class="row">
+                <h5>Buscar Empleado</h5>
+                <div class="col-md-3">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }*@
+
+    <div class="row mt-5">
+        <table class="table table-responsive" id="tblEmpleado">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        NumeroEmpleado
+                    </th>
+                    <th>
+                        RFC
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Apellido Paterno
+                    </th>
+                    <th>
+                        Apellido Materno
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Fecha de Nacimiento
+                    </th>
+                    <th>
+                        NSS
+                    </th>
+                    <th>
+                        Fecha de ingreso
+                    </th>
+                    <th>
+                        Foto
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Dependencia
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-info">
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+                        <td>
+                            @empleado.NumeroEmpleado
+                        </td>
+                        <td>
+                            @empleado.RFC
+                        </td>
+                        <td>
+                            @empleado.Nombre
+                        </td>
+                        <td>
+                            @empleado.ApellidoPaterno
+                        </td>
+                        <td>
+                            @empleado.ApellidoMaterno
+                        </td>
+                        <td>
+                            @empleado.Email
+                        </td>
+                        <td>
+                            @empleado.FechaNacimiento
+                        </td>
+                        <td>
+                            @empleado.NSS
+                        </td>
+                        <td>
+                            @empleado.FechaIngreso
+                        </td>
+                        <td>
+                            @if (empleado.Foto != null)
+                            {
+                                var imagenSRC = $"data:image;base64,{empleado.Foto}";
+                                <img src='@imagenSRC' height='150px' width='150px'>
+                            }
+                            else
+                            {
+                                <img src="~/Image/sinlogo.jpg" height='150px' width='150px' />
+                            }
+                        </td>
+                        @*<td class="hidden">
+                    @empleado.Empresa.IdEmpresa
+                    </td>*@
+                        <td>
+                            @empleado.Empresa.Nombre
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-primary" href="@Url.Action("GetAllDp", "EmpleadoDependiente", new { NumeroEmpleado = empleado.NumeroEmpleado })">Seleccionar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblEmpleado').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+    </script>
+
+}
+

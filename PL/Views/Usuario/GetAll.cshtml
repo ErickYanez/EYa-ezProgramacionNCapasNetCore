@@ -1,0 +1,281 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Usuarios</h2>
+    <p>Aqui puede ver, editar o agregar a un usuario</p>
+    <p>Para agregar un usuario presione el boton verde</p>
+    <p>Para editar un usuario presione el boton azul</p>
+    <p>Para eliminar un usuario presione el boton rojo</p>
+    <p>Para buscar un usuario presione el boton amarillo</p>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("+", "Form", "Usuario", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+     @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <div class="container mt-5">
+            <div class="row">
+                <h5>Buscar Usuario</h5>
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre" })
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @placeholder = "ApellidoPaterno" })
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "Nombre"), "Seleccione un rol", new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Rol.IdRol)
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped" id="tblUsuario">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdUsuario
+                    </th>
+                    <th>
+                        Nombre Completo
+                    </th>
+                    <th>
+                        Sexo
+                    </th>
+                    <th>
+                        FechaNacimiento
+                    </th>
+                    <th>
+                        Password
+                    </th>
+                    <th>
+                        Telefono
+                    </th>
+                    <th>
+                        Celular
+                    </th>
+                    <th>
+                        CURP
+                    </th>
+                    <th>
+                        UserName
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Imagen
+                    </th>
+                    <th>
+                        Rol
+                    </th>
+                    <th>
+                        Direccion
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (ML.Usuario usuario in Model.Usuarios)
+                {
+                    <tr>
+                        <td>
+                            @usuario.IdUsuario
+                        </td>
+                        <td>
+                            @usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno
+                        </td>
+                        <td>
+                            @usuario.Sexo
+                        </td>
+                        <td>
+                            @usuario.FechaNacimiento
+                        </td>
+                        <td>
+                            @usuario.Password
+                        </td>
+                        <td>
+                            @usuario.Telefono
+                        </td>
+                        <td>
+                            @usuario.Celular
+                        </td>
+                        <td>
+                            @usuario.CURP
+                        </td>
+                        <td>
+                            @usuario.UserName
+                        </td>
+                        <td>
+                            @usuario.Email
+                        </td>
+                        <td>
+                            @if (usuario.Imagen != null)
+                            {
+                                var imagenSRC = $"data:image;base64,{usuario.Imagen}";
+                                <img src='@imagenSRC' height='150px' width='150px'>
+                            }
+                            else
+                            {
+                                <img src="~/Image/sin usuario.jpg" height='150px' width='150px'>
+
+                            }
+                        </td>
+                        @*<td class="hidden">
+                    @usuario.Rol.IdRol
+                    </td>*@
+                        <td>
+                            @usuario.Rol.Nombre
+                        </td>
+                        @*<td class="hidden">
+                    @usuario.Direccion.IdDireccion
+                    </td>*@
+                        <td>
+                            @usuario.Direccion.Calle @usuario.Direccion.NumeroInterior @usuario.Direccion.NumeroExterior @usuario.Direccion.Colonia.Nombre @usuario.Direccion.Colonia.CodigoPostal @usuario.Direccion.Colonia.Municipio.Nombre @usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre
+                        </td>
+                        @if (usuario.Status)
+                        {
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckStatus" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckStatus" onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                                </div>
+                            </td>
+                        }
+                        @*<td>
+                    @usuario.Direccion.NumeroInterior @usuario.Direccion.NumeroExterior
+                    </td>*@
+                        @*<td class="hidden">
+                    @usuario.Direccion.Colonia.IdColonia
+                    </td>*@
+                        @*<td>
+                    @usuario.Direccion.Colonia.Nombre
+                    </td>
+                    <td>
+                    @usuario.Direccion.Colonia.CodigoPostal
+                    </td>*@
+                        @*<td class="hidden">
+                    @usuario.Direccion.Colonia.Municipio.IdMunicipio
+                    </td>*@
+                        @*<td>
+                    @usuario.Direccion.Colonia.Municipio.Nombre
+                    </td>*@
+                        @*<td class="hidden">
+                    @usuario.Direccion.Colonia.Municipio.Estado.IdEstado
+                    </td>*@
+                        @* <td>
+                    @usuario.Direccion.Colonia.Municipio.Estado.Nombre
+                    </td>*@
+                        @*<td class="hidden">
+                    @usuario.Direccion.Colonia.Municipio.Estado.Pais.IdPais
+                    </td>*@
+                        @* <td>
+                    @usuario.Direccion.Colonia.Municipio.Estado.Pais.Nombre
+                    </td>*@
+                        <td class="text-center">
+                            <a class="btn btn-primary bi-pencil-square" href="@Url.Action("Form", "Usuario", new { IdUsuario = usuario.IdUsuario})"></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "Usuario", new { IdUsuario = usuario.IdUsuario})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblUsuario').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+
+        function ChangeStatus(idUsuario, e) {
+            var status = e.checked
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CambiarStatus")',
+                dataType: 'json',
+                data: { idUsuario, status },
+                success: {},
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        }
+      
+    </script>
+
+}

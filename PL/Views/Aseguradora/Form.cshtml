@@ -1,0 +1,99 @@
+﻿@model ML.Aseguradora
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2>Form</h2>
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Aseguradora", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h3 class="text-center">Datos de la aseguradora</h3>
+                <div class="form-horizontal">
+                    <div class="form-group">
+
+                        <div class="col-md-3">
+
+                            @Html.HiddenFor(model => model.IdAseguradora)
+
+                            @*@Html.TextBoxFor(model => model.IdUsuario, new { @class = "hidden form-control" })
+
+                            @Html.ValidationMessageFor(model => model.IdUsuario)*@
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+
+                                    @Html.LabelFor(model => model.Nombre)
+
+                                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+
+                                    @Html.ValidationMessageFor(model => model.Nombre)
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+
+                                    @Html.LabelFor(model => model.Usuario)
+
+                                    @Html.DropDownListFor(model => model.Usuario.IdUsuario, new SelectList(Model.Usuario.Usuarios, "IdUsuario", "NombreCompleto"), "Seleccione un usuario", new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(model => model.Usuario.IdUsuario)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Guardar" class="btn btn-success" />
+
+                                @Html.ActionLink("Regresar", "GetAll", "Usuario", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        function readImage(imagen) {
+            var fileName = imagen.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+
+                if (imagen.files && imagen.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                        $("#ImagenPreview").attr("src", e.target.result);
+                    };
+                    reader.readAsDataURL(imagen.files[0]);
+                }
+
+            } else {
+
+                alert("This is not an allowed file type. \nOnly jpg / jpeg and png files are allowed!.");
+
+                $('#inputImage').val(null);
+
+                $("#ImagenPreview").attr("src", "~/Image/sinlogo.jpg");
+
+            }
+
+        }
+    </script>
+}
+

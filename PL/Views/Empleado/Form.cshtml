@@ -1,0 +1,297 @@
+﻿@model ML.Empleado
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2>Form</h2>
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h3 class="text-center">Datos del empleado</h3>
+                <div class="form-horizontal">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.NumeroEmpleado)
+
+                                    <div class="input-group">
+
+                                        @if (Model.NumeroEmpleado == null)
+                                        {
+                                            <div class="col-md-10 input-group">
+                                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
+                                                @Html.EditorFor(model => model.NumeroEmpleado, new { htmlAttributes = new { @class = "form-control",  id="inputTXT_NumeroEmpleado" } })
+                                                @Html.ValidationMessageFor(model => model.NumeroEmpleado, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div id="alert_Telefono" class="text-danger"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-10 input-group">
+                                                <span class="input-group-text" id="basic-addon1"><i class="bi bi-telephone-fill"></i></span>
+                                                @Html.EditorFor(model => model.NumeroEmpleado, new { htmlAttributes = new { @class = "form-control",  id="inputTXT_NumeroEmpleado", disabled="disabled readonly" } })
+                                                @Html.ValidationMessageFor(model => model.NumeroEmpleado, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div id="alert_Telefono" class="text-danger"></div>
+
+                                            <div class="col-md-3">
+                                                @Html.HiddenFor(model => model.NumeroEmpleado)
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.NumeroEmpleado)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.RFC)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                        @Html.TextBoxFor(model => model.RFC, new { @class = "form-control"})
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.RFC)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.Nombre)
+                                    
+                                    <div class="input-group">
+                                        
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.Nombre)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.ApellidoPaterno)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.ApellidoMaterno)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.ApellidoMaterno)
+
+                                </div>
+
+                            </div>
+
+                            <div class="col">
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.Email)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.Email)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.Email,"Confirmar Email")
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.Email)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.FechaNacimiento)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                        @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @id="txtFechaNacimiento" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.FechaNacimiento)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.NSS)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person-vcard-fill"></i></span>
+                                        @Html.TextBoxFor(model => model.NSS, new { @class = "form-control" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.NSS)
+
+                                </div>
+
+                                <div class="col mt-3">
+
+                                    @Html.LabelFor(model => model.FechaIngreso)
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                        @Html.TextBoxFor(model => model.FechaIngreso, new { @class = "form-control", @id="txtFechaIngreso" })
+
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.FechaIngreso)
+
+                                </div>
+
+                            </div>
+
+                            <div class="col">
+                                <div class="col mt-3">
+                                    @Html.LabelFor(model => model.Empresa)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person-rolodex"></i></span>
+                                        @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Seleccione una empresa", new { @class = "form-control" })
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Empresa.IdEmpresa)
+                                </div>
+
+                                <div class="col mt-3">
+                                    @Html.LabelFor(model => model.Foto)
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-card-image"></i></span>
+                                        <input accept=".png, .jpg, .jpeg" , id="inputImage" type='file' class="form-control" name="FileImage" onchange="readImage(this);  " />
+                                    </div>
+                                    @if (Model.Foto != null)
+                                    {
+                                        var imagenSRC = $"data:image;base64,{Model.Foto}";
+                                        <img id="ImagenPreview" src='@imagenSRC' class="rounded img-thumbnail" alt='Category Image' height='200px' width='200px'>
+                                    }
+                                    else
+                                    {
+                                        <img id="ImagenPreview" src="~/Image/sin usuario.jpg" class="rounded img-thumbnail" alt='Category Image' height='200px' width='200px' required>
+                                    }
+                                </div>
+                                @Html.HiddenFor(model => model.Foto) 
+                            </div>                           
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-md-center mt-5">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Guardar" class="btn btn-success" />
+
+                                @Html.ActionLink("Regresar", "GetAll", "Empleado", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        function readImage(imagen) {
+            var fileName = imagen.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+
+                if (imagen.files && imagen.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                        $("#ImagenPreview").attr("src", e.target.result);
+                    };
+                    reader.readAsDataURL(imagen.files[0]);
+                }
+
+            } else {
+
+                alert("This is not an allowed file type. \nOnly jpg / jpeg and png files are allowed!.");
+
+                $('#inputImage').val(null);
+
+                $("#ImagenPreview").attr("src", "~/Image/sin usuario.jpg");
+
+            }
+        }
+
+        $(function () {
+            $("#txtFechaNacimiento").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+0'
+            });
+        });
+
+        $(function () {
+            $("#txtFechaIngreso").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+0'
+            });
+        });
+    </script>
+}
+

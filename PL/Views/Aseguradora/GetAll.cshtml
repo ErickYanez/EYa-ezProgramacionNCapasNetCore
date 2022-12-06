@@ -1,0 +1,107 @@
+﻿@model ML.Aseguradora
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de empresas</h2>
+    <p>Aqui puede ver, editar o agregar una aseguradora</p>
+    <p>Para agregar una empresa presione el boton verde</p>
+    <p>Para editar una empresa presione el boton azul</p>
+    <p>Para eliminar una empresa presione el boton rojo</p>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("+", "Form", "Aseguradora", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="table table-responsive" id="tblAseguradora">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdAseguradora
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        FechaCreacion
+                    </th>
+                    <th>
+                        FechaModificacion
+                    </th>
+                    <th>
+                        NombreUsuario
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-info">
+                @foreach (ML.Aseguradora aseguradora in Model.Aseguradoras)
+                {
+                    <tr>
+                        <td>
+                            @aseguradora.IdAseguradora
+                        </td>
+                        <td>
+                            @aseguradora.Nombre
+                        </td>
+                        <td>
+                            @aseguradora.FechaCreacion
+                        </td>
+                        <td>
+                            @aseguradora.FechaModificacion
+                        </td>
+                        <td>
+                            @aseguradora.Usuario.Nombre @aseguradora.Usuario.ApellidoPaterno @aseguradora.Usuario.ApellidoMaterno
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-primary bi-pencil-square" href="@Url.Action("Form", "Aseguradora", new { IdAseguradora = aseguradora.IdAseguradora })"></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "Aseguradora", new { IdAseguradora = aseguradora.IdAseguradora })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblAseguradora').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+    </script>
+
+}

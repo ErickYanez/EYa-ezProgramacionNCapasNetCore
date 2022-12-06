@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "CargaMasiva";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    @using (Html.BeginForm("CargaExcel", "CargaMasiva", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <h2 class="text-center">Carga masiva</h2>
+            <div class="col mt-5">
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-outline-warning" type="button" id="btn_txt">Archivo TXT</button>
+                    <div id="inputTXT" style="display: none;">
+                        <input type="file" name="archivoTXT" id="inputFiletxt" onchange="readFile(this)" />
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-5">
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button class="btn btn-outline-success" type="button" id="btn_xlsx">Archivo Excel</button>
+                    <div id="inputXLS" style="display: none;">
+                        <input type="file" name="FileExcel" id="inputFilexlsx" onchange="readFile(this)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.Correct)
+        {
+            <div class="col">
+                <div class="d-grid mt-5 gap-2 col-6 mx-auto">
+                    <button class="btn btn-outline-success" id="btnUploadxlsx" style="display: none;">
+                        <i type="submit"> Procesar </i>
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col">
+                <div class="d-grid mt-5 gap-2 col-6 mx-auto">
+                    <button class="btn btn-outline-success" id="btnUploadxlsx" style="display: none;">
+                        <i type="submit"> Insertar </i>
+                    </button>
+                </div>
+            </div>
+        }
+        <div class="col">
+            <div class="d-grid mt-5 gap-2 col-6 mx-auto">
+                <button class="btn btn-outline-success" id="btnUploadtxt" style="display: none;">
+                    <i type="submit"> Cargar </i>
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                @if (Model.Objects != null)
+                {
+                    @if (Model.Objects.Count > 0)
+                    {
+                        <table class="table table-bordered table-responsive">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>IdRegistro</td>
+                                    <td>Error</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (ML.ErrorExcel error in Model.Objects)
+                                {
+                                    <tr class="text-center">
+                                        <td>@error.IdRegistro</td>
+                                        <td>@error.Mensaje</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#btn_txt").click(function () {
+                if ($("#inputXLS:visible") || $("#btnUploadxlsx:visible")) {
+                    $("#inputXLS").hide();
+                    $("#btnUploadxlsx").hide();
+                }
+                $("#inputTXT").toggle();
+                $("#btnUploadtxt").toggle();
+            });
+
+            $("#btn_xlsx").click(function () {
+                if ($("#inputTXT:visible") || $("#btnUploadtxt:visible")) {
+                    $("#inputTXT").hide();
+                    $("#btnUploadtxt").hide();
+                }
+                $("#inputXLS").toggle();
+                $("#btnUploadxlsx").toggle();
+            });
+        });
+
+        function readFile(file) {
+            var fileName = file.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+            if (extFile == "txt" || extFile == "xlsx") {
+                
+            }else{
+                alert("This is not an allowed file type. \nOnly .txt or .xlsx files are allowed!.");
+                $('#inputFiletxt').val(null);
+                $('#inputFilexlsx').val(null);
+            }
+        }
+    </script>
+}
