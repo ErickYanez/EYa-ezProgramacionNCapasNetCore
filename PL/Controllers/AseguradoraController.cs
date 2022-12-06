@@ -24,6 +24,7 @@ namespace PL.Controllers
         public ActionResult Form(int? IdAseguradora)
         {
             ML.Usuario usuario = new ML.Usuario();
+            usuario.Rol = new ML.Rol();
             ML.Result resultusuario = BL.Usuario.GetAllEF(usuario);
             ML.Aseguradora aseguradora = new ML.Aseguradora();
             aseguradora.Usuario = new ML.Usuario();
