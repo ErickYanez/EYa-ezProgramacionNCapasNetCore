@@ -133,5 +133,22 @@ namespace SL.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("GetByIdUserName/{userName}")]
+        public IActionResult GetByIdUserName(string userName)
+        {
+            ML.Usuario usuario = new ML.Usuario();
+            usuario.Rol = new ML.Rol();
+            ML.Result result = BL.Usuario.GetByIdUserName(userName);
+
+            if (result.Correct)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

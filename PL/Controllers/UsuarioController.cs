@@ -56,7 +56,7 @@ namespace PL.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.Correct = false;
                 result.Message = ex.Message;
@@ -130,7 +130,7 @@ namespace PL.Controllers
                 ViewBag.Message = "Ocurrio un error al realizar la consulta";
             }
             return View(usuario);
-        }     
+        }
 
         public JsonResult GetEstado(int IdPais)
         {
@@ -255,12 +255,12 @@ namespace PL.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
                 //ADD
                 if (usuario.IdUsuario == 0)
                 {
                     //ML.Result result = BL.Usuario.AddEF(usuario);
-                    ML.Result result = new ML.Result();                  
+                    ML.Result result = new ML.Result();
                     try
                     {
                         using (HttpClient httpClient = new HttpClient())
@@ -305,7 +305,7 @@ namespace PL.Controllers
                     }
                 }
                 else
-                {                 
+                {
                     //UPDATE
                     if (usuario != null)
                     {
@@ -441,7 +441,7 @@ namespace PL.Controllers
                 return Redirect("/Usuario/GetAll");
             }
             return PartialView("Modal");
-        }  
+        }
 
         public static byte[] ConvertToBytes(IFormFile imagen)
         {
@@ -466,6 +466,73 @@ namespace PL.Controllers
             var result = BL.Usuario.ChangeStatus(idUsuario, status);
 
             return Json(result.Objects);
+        }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string userName, string password)
+        {
+            //ML.Result result = BL.Usuario.GetByIdUserName(userName);
+            ML.Result result = new ML.Result();
+            try
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    httpClient.DefaultRequestHeaders.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    string urlAPI = _configuration["UrlAPI"];
+                    httpClient.BaseAddress = new Uri(urlAPI);
+
+                    var request = httpClient.GetAsync($"Usuario/GetByIdUserName/{userName}");
+                    request.Wait();
+
+                    var response = request.Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var readContent = response.Content.ReadAsStringAsync().Result;
+
+                        ML.Result resultAPI = JsonConvert.DeserializeObject<ML.Result>(readContent);
+
+                        result.Message = resultAPI.Message;
+
+                        if (resultAPI.Correct)
+                        {
+                            ML.Usuario user = JsonConvert.DeserializeObject<ML.Usuario>(resultAPI.Objeto.ToString());
+                            result.Objeto = user;
+                            result.Correct = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                result.Correct = false;
+                result.Message = error.Message;
+            }
+            if (result.Correct)
+            {
+                ML.Usuario usuario = (ML.Usuario)result.Objeto;
+                if (usuario.Password == password)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Message = "Contrasena incorrecta";
+                    return PartialView("Modall");
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Error: " + result.Message;
+                return PartialView("Modall");
+            }
         }
     }
 }
